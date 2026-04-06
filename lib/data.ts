@@ -187,7 +187,7 @@ export const projects = [
     url: "https://thealfabeauty.com/",
     color: "#FF6B9D",
     glow: "rgba(255,107,157,0.12)",
-    mockImage: "/projects/project1.jpg",
+    mockImage: "/projects/project1.png",
     description:
       "Built and managed the full digital presence for a premium beauty brand — WordPress setup, on-page SEO, product-focused content strategy, and Meta Ads campaigns driving e-commerce conversions.",
     role: "WordPress Developer + SEO + Meta Ads",
@@ -205,7 +205,7 @@ export const projects = [
     url: "https://yuccaagro.com/",
     color: "#4ADE80",
     glow: "rgba(74,222,128,0.12)",
-    mockImage: "/projects/project2.jpg",
+    mockImage: "/projects/project2.png",
     description:
       "Designed and launched a WordPress website for an agro products company. Executed B2B SEO strategy targeting industry-specific keywords and built lead generation funnels through Google Ads.",
     role: "WordPress Developer + SEO + Google Ads",
@@ -223,7 +223,7 @@ export const projects = [
     url: "https://tag4marketingco.com/",
     color: "#00D4FF",
     glow: "rgba(0,212,255,0.12)",
-    mockImage: "/projects/project3.jpg",
+    mockImage: "/projects/project3.png",
     description:
       "Owned the WordPress website for Tag4 Marketing Co. — the agency itself. Managed ongoing SEO, performance optimisation, content updates, and social media presence to attract inbound client leads.",
     role: "WordPress Manager + SEO + Content Strategy",

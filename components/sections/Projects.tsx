@@ -43,10 +43,10 @@ function ProjectCard({ project, index, onHoverInfo }: { project: typeof projects
   const glow = project.glow;
 
   return (
-    <ScrollReveal delay={0.1 * index} direction="up">
+    <ScrollReveal delay={0.1 * index} direction="up" className="h-full">
       <motion.div
         ref={cardRef}
-        className="relative glass-card rounded-2xl overflow-hidden border border-white/8"
+        className="relative glass-card rounded-2xl overflow-hidden border border-white/8 h-full flex flex-col"
         style={{
           rotateX,
           rotateY,
@@ -78,40 +78,58 @@ function ProjectCard({ project, index, onHoverInfo }: { project: typeof projects
             target="_blank"
             rel="noopener noreferrer"
             data-cursor="view"
-            className="relative h-44 overflow-hidden block"
+            className="relative overflow-hidden block h-[360px]"
             style={{ background: `linear-gradient(160deg, #0d0d1a 0%, ${color}18 60%, ${glow} 100%)` }}
           >
-            {/* Fake hero section */}
-            <motion.div 
-              className="absolute inset-0 p-4 flex flex-col gap-2.5"
-              style={{ y: yParallax }}
-              animate={{ scale: hovered ? 1.05 : 1 }}
-              transition={{ duration: 0.4 }}
-            >
-              {/* Nav bar */}
-              <div className="flex items-center gap-2 mb-1">
-                <div className="w-12 h-2 rounded-full" style={{ background: `${color}60` }} />
-                <div className="flex-1" />
-                {[1,2,3].map(j => (
-                  <div key={j} className="w-8 h-1.5 rounded-full bg-white/15" />
+            {project.mockImage ? (
+              /* Real Screenshot Image Auto-Scroll (Ping-Pong Pan) */
+              <motion.div 
+                className="absolute top-0 inset-x-0 w-full"
+                animate={{ y: ["0%", "calc(-100% + 360px)"] }}
+                transition={{ repeat: Infinity, repeatType: "reverse", duration: 15, ease: "linear" }}
+              >
+                <img src={project.mockImage} alt={project.title} className="w-full h-auto block" />
+              </motion.div>
+            ) : (
+              /* Fallback: Fake hero section - infinite scrolling */
+              <motion.div 
+                className="absolute inset-x-0 p-4 flex flex-col gap-3"
+                animate={hovered ? { y: ["0%", "-100%"] } : { y: "0%" }}
+                transition={{ repeat: Infinity, duration: 12, ease: "linear" }}
+              >
+                {[1, 2].map((loopIdx) => (
+                  <div key={loopIdx} className="flex flex-col gap-3 pb-8">
+                    {/* Nav bar */}
+                    <div className="flex items-center gap-2 mb-2">
+                      <div className="w-12 h-2 rounded-full" style={{ background: `${color}60` }} />
+                      <div className="flex-1" />
+                      {[1,2,3].map(j => (
+                        <div key={j} className="w-8 h-1.5 rounded-full bg-white/15" />
+                      ))}
+                      <div className="w-12 h-5 rounded-md" style={{ background: `${color}35`, border: `1px solid ${color}40` }} />
+                    </div>
+                    {/* Hero content */}
+                    <div className="w-3/4 h-4 rounded-full" style={{ background: `${color}50` }} />
+                    <div className="w-1/2 h-2.5 rounded-full bg-white/20" />
+                    <div className="w-3/5 h-2.5 rounded-full bg-white/12" />
+                    <div className="flex gap-2 mt-2">
+                      <div className="w-24 h-8 rounded-lg" style={{ background: `${color}50` }} />
+                      <div className="w-20 h-8 rounded-lg bg-white/10 border border-white/15" />
+                    </div>
+                    {/* Image/Video block */}
+                    <div className="w-full h-24 rounded-xl mt-2 bg-white/5 border border-white/10 relative overflow-hidden">
+                      <div className="absolute inset-0 opacity-20" style={{ background: `linear-gradient(45deg, ${color}, transparent)` }} />
+                    </div>
+                    {/* Cards row */}
+                    <div className="flex gap-2 mt-2">
+                      {[1,2,3].map(j => (
+                        <div key={j} className="flex-1 h-14 rounded-lg" style={{ background: j === 1 ? `${color}20` : "rgba(255,255,255,0.05)", border: `1px solid ${j === 1 ? color + "30" : "rgba(255,255,255,0.08)"}` }} />
+                      ))}
+                    </div>
+                  </div>
                 ))}
-                <div className="w-12 h-5 rounded-md" style={{ background: `${color}35`, border: `1px solid ${color}40` }} />
-              </div>
-              {/* Hero content */}
-              <div className="w-2/3 h-3 rounded-full" style={{ background: `${color}50` }} />
-              <div className="w-1/2 h-2 rounded-full bg-white/20" />
-              <div className="w-3/5 h-2 rounded-full bg-white/12" />
-              <div className="flex gap-2 mt-1">
-                <div className="w-20 h-6 rounded-lg" style={{ background: `${color}50` }} />
-                <div className="w-16 h-6 rounded-lg bg-white/10 border border-white/15" />
-              </div>
-              {/* Cards row */}
-              <div className="flex gap-2 mt-2">
-                {[1,2,3].map(j => (
-                  <div key={j} className="flex-1 h-10 rounded-lg" style={{ background: j === 1 ? `${color}20` : "rgba(255,255,255,0.05)", border: `1px solid ${j === 1 ? color + "30" : "rgba(255,255,255,0.08)"}` }} />
-                ))}
-              </div>
-            </motion.div>
+              </motion.div>
+            )}
             {/* Hover overlay */}
             <motion.div
               className="absolute inset-0 flex flex-col items-center justify-center gap-2"
@@ -123,8 +141,8 @@ function ProjectCard({ project, index, onHoverInfo }: { project: typeof projects
         </div>
 
         {/* Card body */}
-        <div className="p-6">
-          <div className="flex items-start justify-between gap-4 mb-3">
+        <div className="p-6 md:p-8 flex flex-col flex-1">
+          <div className="flex items-start justify-between gap-4 mb-4">
             <div>
               <span className="font-mono text-xs" style={{ color }}>
                 Project {project.id}
@@ -165,19 +183,18 @@ function ProjectCard({ project, index, onHoverInfo }: { project: typeof projects
 
           {/* Results */}
           <div
-            className="grid grid-cols-3 gap-3 pt-4 border-t"
+            className="grid grid-cols-3 gap-3 pt-4 border-t mt-auto"
             style={{ borderColor: `${color}15` }}
           >
             {project.results.map((r, i) => (
               <div key={i} className="text-center">
                 <div
-                  className="font-display font-bold text-xl"
+                  className="font-display font-bold text-xl md:text-2xl"
                   style={{ color }}
                 >
                   {r.value}
                 </div>
                 <div className="text-white/50 text-xs mt-0.5 leading-tight">{r.label}</div>
-                <div className="text-white/25 text-xs font-mono">{r.sub}</div>
               </div>
             ))}
           </div>
@@ -222,9 +239,11 @@ export default function Projects() {
           </p>
         </ScrollReveal>
 
-        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 auto-rows-[1fr]">
           {projects.map((project, i) => (
-            <ProjectCard key={project.id} project={project} index={i} onHoverInfo={setActiveColor} />
+            <div key={project.id} className="h-full">
+              <ProjectCard project={project} index={i} onHoverInfo={setActiveColor} />
+            </div>
           ))}
         </div>
       </div>
