@@ -17,8 +17,8 @@ export const personalInfo = {
   ],
   email: "mashik7269@gmail.com",
   phone: "+91 7559014599",
-  linkedin: "https://linkedin.com/in/ashikk",
-  instagram: "https://instagram.com/ashikk",
+  linkedin: "https://www.linkedin.com/in/muhammedashikk",
+  instagram: "https://www.instagram.com/__ashiquii__",
   location: "Bangalore, India",
   stats: [
     { value: "2+", label: "Years Experience" },
