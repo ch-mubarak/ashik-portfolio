@@ -38,16 +38,16 @@ export default function CaseStudy() {
           <p className="text-white/40 text-base mb-12 max-w-xl">A snapshot of the measurable impact delivered across organic and paid channels.</p>
         </ScrollReveal>
 
-        {/* Big metrics */}
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-5">
+        {/* Big metrics - 1 column on mobile, 2 for small tablets, 4 for desktop */}
+        <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 md:gap-5">
           {caseStudy.highlights.map((item, i) => (
             <ScrollReveal key={i} delay={0.1 * i}>
               <div
-                className="glass-card rounded-2xl p-6 border text-center"
+                className="glass-card rounded-2xl p-4 md:p-6 border text-center flex flex-col justify-center min-h-[120px] md:min-h-[140px]"
                 style={{ borderColor: `${item.color}20` }}
               >
                 <div
-                  className="font-display font-bold text-3xl md:text-4xl mb-1"
+                  className="font-display font-bold text-2xl xs:text-3xl sm:text-3xl md:text-4xl mb-1"
                   style={{ color: item.color }}
                 >
                   {inView && (

@@ -43,10 +43,20 @@ export default function AnimatedCounter({
     return () => clearInterval(timer);
   }, [inView, value, duration]);
 
+  const formatNumber = (num: number) => {
+    if (num >= 1000000) {
+      return (num / 1000000).toFixed(1).replace(/\.0$/, "") + "M";
+    }
+    if (num >= 1000) {
+      return (num / 1000).toFixed(1).replace(/\.0$/, "") + "K";
+    }
+    return decimals > 0 ? num.toFixed(decimals) : Math.floor(num).toLocaleString();
+  };
+
   return (
     <span ref={ref} className={className}>
       {prefix}
-      {decimals > 0 ? count.toFixed(decimals) : Math.floor(count).toLocaleString()}
+      {formatNumber(count)}
       {suffix}
     </span>
   );
