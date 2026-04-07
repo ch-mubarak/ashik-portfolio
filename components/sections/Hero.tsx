@@ -51,8 +51,8 @@ const MagneticButton = ({ children, className, href, target, rel }: any) => {
   const handleMouse = (e: React.MouseEvent<HTMLAnchorElement>) => {
     const { clientX, clientY } = e;
     const { height, width, left, top } = ref.current!.getBoundingClientRect();
-    const middleX = clientX - (left + width/2);
-    const middleY = clientY - (top + height/2);
+    const middleX = clientX - (left + width / 2);
+    const middleY = clientY - (top + height / 2);
     x.set(middleX * 0.2);
     y.set(middleY * 0.2);
   };
@@ -101,7 +101,7 @@ const LivingParagraph = ({ text, className }: { text: string, className?: string
 
 export default function Hero() {
   const sectionRef = useRef<HTMLElement>(null);
-  
+
   // Mouse tracking for spotlight and parallax
   const mouseX = useMotionValue(0);
   const mouseY = useMotionValue(0);
@@ -142,15 +142,15 @@ export default function Hero() {
 
   return (
     <section ref={sectionRef} className="relative min-h-screen flex flex-col justify-center overflow-hidden pt-24 pb-12 bg-[#05050A]">
-      
+
       {/* Massive Background Text */}
-      <motion.div 
+      <motion.div
         className="absolute inset-0 flex items-center justify-center pointer-events-none select-none overflow-hidden z-0"
         style={{ x: textX, y: textY }}
       >
-        <motion.span 
+        <motion.span
           className="font-display font-[900] text-[22vw] leading-none whitespace-nowrap text-transparent transition-all"
-          style={{ 
+          style={{
             WebkitTextStroke: "1px rgba(255,255,255,0.03)",
             opacity: 0.5,
             textShadow: glitchTextShadow
@@ -167,7 +167,7 @@ export default function Hero() {
         style={{
           backgroundImage: "radial-gradient(rgba(255,255,255,0.03) 1px, transparent 1px)",
           backgroundSize: "44px 44px",
-        }} 
+        }}
       />
 
       {/* Spotlight layer over the dot grid */}
@@ -177,17 +177,17 @@ export default function Hero() {
           backgroundSize: "44px 44px",
           maskImage: spotlightMask,
           WebkitMaskImage: spotlightMask,
-        }} 
+        }}
       />
 
       {/* Content — Modern editorial feel */}
-      <motion.div 
+      <motion.div
         className="section-container relative z-10 flex w-full"
         style={{ perspective: 1500, rotateX, rotateY }}
       >
         {/* Left Side Typography */}
         <div className="flex flex-col gap-6 relative z-20 w-full lg:w-[65%]">
-          
+
           {/* Top Info Bar (Pill + Signature Name) */}
           <div className="flex flex-wrap items-center gap-4 mb-2">
             <motion.a href="#contact"
@@ -203,7 +203,7 @@ export default function Hero() {
               <span className="text-xs font-mono text-white/50 tracking-wide">Available</span>
             </motion.a>
 
-            <motion.div 
+            <motion.div
               initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 1.2 }}
               className="px-3 py-1 border border-white/5 rounded text-white/30 font-mono text-xs uppercase"
             >
@@ -260,15 +260,15 @@ export default function Hero() {
             initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 1.6, duration: 0.5 }}
           >
-            <LivingParagraph 
-              text={personalInfo.bio} 
-              className="text-white/45 text-base md:text-lg max-w-lg leading-relaxed mb-6" 
+            <LivingParagraph
+              text={personalInfo.bio}
+              className="text-white/45 text-base md:text-lg max-w-lg leading-relaxed mb-6"
             />
           </motion.div>
 
           {/* CTAs */}
           <motion.div
-            className="flex flex-wrap gap-3 mb-16"
+            className="flex flex-wrap gap-3 mb-6 lg:mb-16"
             initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 1.7, duration: 0.5 }}
           >
@@ -291,54 +291,57 @@ export default function Hero() {
           </motion.div>
         </div>
 
-        {/* Right Side: Portrait Cutout (Centered & Faded) */}
-        <motion.div 
-          className="hidden lg:flex absolute right-0 top-[35%] -translate-y-1/2 w-[40vw] max-w-[550px] justify-end items-center z-10 pointer-events-none"
-          initial={{ opacity: 0, filter: "blur(10px)" }}
-          animate={{ opacity: 1, filter: "blur(0px)" }}
-          transition={{ duration: 2, delay: 0.3, ease: [0.16, 1, 0.3, 1] }}
-          style={{ 
-            x: imageX, 
-            y: imageY, 
-            rotateX: imageRotateX, 
-            rotateY: imageRotateY,
-            perspective: 1500 
-          }}
+        {/* Full-bleed cinematic background portrait — all screen sizes */}
+        <motion.div
+          className="absolute inset-0 z-0 pointer-events-none"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 2.5, delay: 0.3 }}
         >
-          {/* Floating UI Holograms */}
-          <motion.div 
-            className="absolute -left-12 top-[15%] border border-cyan-500/20 p-2 text-[10px] text-cyan-500 font-mono flex flex-col gap-1 backdrop-blur-sm z-20" 
-            animate={{ y: [0, -15, 0] }} 
-            transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
-          >
-            <span className="opacity-50">SYS.ACTV</span>
-            <span className="animate-pulse">_ONLINE</span>
-          </motion.div>
+          {/* Portrait cutout — transparent PNG, right-anchored, full height */}
+          <img
+            src="/portrait-cutout.png"
+            alt="Ashik Portrait"
+            className="absolute right-0 top-0 h-full w-auto object-contain object-right-top"
+            style={{
+              filter: "drop-shadow(-30px 0 60px rgba(0,212,255,0.18)) drop-shadow(0 0 80px rgba(124,58,237,0.15))"
+            }}
+          />
 
-          <motion.div 
-            className="absolute -right-8 bottom-[25%] border border-violet-500/20 p-2 text-[10px] text-violet-500 font-mono backdrop-blur-sm z-20" 
-            animate={{ y: [0, 15, 0] }} 
-            transition={{ duration: 5, repeat: Infinity, ease: "easeInOut", delay: 1 }}
-          >
-            <span className="opacity-50">SCN.</span>
-            <span>99.9%</span>
-          </motion.div>
+          {/* Bottom fade to dark */}
+          <div
+            className="absolute inset-0"
+            style={{
+              background: "linear-gradient(to bottom, transparent 0%, rgba(5,5,10,0.5) 55%, rgba(5,5,10,0.9) 78%, rgba(5,5,10,1) 100%)"
+            }}
+          />
 
-          {/* Pristine cutout with a dual-tone glowing drop-shadow and a bottom fade mask */}
-          <motion.div className="w-full relative" style={{
-            maskImage: "linear-gradient(to bottom, black 70%, transparent 100%)",
-            WebkitMaskImage: "linear-gradient(to bottom, black 70%, transparent 100%)",
-            filter: glitchTextShadow
-          }}>
-            <img 
-              src="/portrait-cutout.png" 
-              alt="Ashik Portrait" 
-              className="w-full h-auto object-contain opacity-100"
-              style={{
-                filter: "drop-shadow(-20px 0 40px rgba(0,212,255,0.25)) drop-shadow(20px 0 40px rgba(124,58,237,0.25))"
-              }}
-            />
-          </motion.div>
+          {/* Left fade — keeps text area readable */}
+          <div
+            className="absolute inset-0"
+            style={{
+              background: "linear-gradient(to right, rgba(5,5,10,1) 0%, rgba(5,5,10,0.88) 30%, rgba(5,5,10,0.4) 55%, transparent 80%)"
+            }}
+          />
+        </motion.div>
+
+        {/* Floating hologram chips — desktop only */}
+        <motion.div
+          className="hidden lg:flex absolute right-[32%] top-[18%] border border-cyan-500/20 p-2 text-[10px] text-cyan-500 font-mono flex-col gap-1 backdrop-blur-sm z-20 pointer-events-none"
+          animate={{ y: [0, -15, 0] }}
+          transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
+        >
+          <span className="opacity-50">SYS.ACTV</span>
+          <span className="animate-pulse">_ONLINE</span>
+        </motion.div>
+
+        <motion.div
+          className="hidden lg:block absolute right-[10%] bottom-[28%] border border-violet-500/20 p-2 text-[10px] text-violet-500 font-mono backdrop-blur-sm z-20 pointer-events-none"
+          animate={{ y: [0, 15, 0] }}
+          transition={{ duration: 5, repeat: Infinity, ease: "easeInOut", delay: 1 }}
+        >
+          <span className="opacity-50">SCN.</span>
+          <span>99.9%</span>
         </motion.div>
       </motion.div>
 

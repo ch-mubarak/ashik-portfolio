@@ -78,18 +78,17 @@ function ProjectCard({ project, index, onHoverInfo }: { project: typeof projects
             target="_blank"
             rel="noopener noreferrer"
             data-cursor="view"
-            className="relative overflow-hidden block h-[360px]"
+            className="relative overflow-hidden block h-[240px] sm:h-[320px] lg:h-[360px]"
             style={{ background: `linear-gradient(160deg, #0d0d1a 0%, ${color}18 60%, ${glow} 100%)` }}
           >
             {project.mockImage ? (
-              /* Real Screenshot Image Auto-Scroll (Ping-Pong Pan) */
-              <motion.div 
-                className="absolute top-0 inset-x-0 w-full"
-                animate={{ y: ["0%", "calc(-100% + 360px)"] }}
-                transition={{ repeat: Infinity, repeatType: "reverse", duration: 15, ease: "linear" }}
-              >
-                <img src={project.mockImage} alt={project.title} className="w-full h-auto block" />
-              </motion.div>
+              /* Real Screenshot Image — CSS pan from top to bottom */
+              <img
+                src={project.mockImage}
+                alt={project.title}
+                className="absolute inset-0 w-full h-full object-cover object-top"
+                style={{ animation: "imgPanY 10s ease-in-out infinite alternate" }}
+              />
             ) : (
               /* Fallback: Fake hero section - infinite scrolling */
               <motion.div 

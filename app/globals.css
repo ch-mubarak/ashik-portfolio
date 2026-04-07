@@ -222,6 +222,12 @@ body::before {
   animation-play-state: paused;
 }
 
+/* Project card screenshot pan */
+@keyframes imgPanY {
+  0%   { object-position: top center; }
+  100% { object-position: bottom center; }
+}
+
 /* Timeline line */
 .timeline-line {
   background: linear-gradient(180deg, #00D4FF, #7C3AED, transparent);
