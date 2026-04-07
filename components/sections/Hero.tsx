@@ -1,7 +1,7 @@
 "use client";
 
 import { useCallback, useEffect, useRef, useState } from "react";
-import { motion, useMotionValue, useSpring, useTransform, useMotionTemplate } from "framer-motion";
+import { motion, useMotionValue, useSpring, useTransform, useMotionTemplate, useScroll } from "framer-motion";
 import { ArrowDown, ArrowUpRight, Download } from "lucide-react";
 import { personalInfo } from "@/lib/data";
 
@@ -41,6 +41,64 @@ function Typewriter() {
   );
 }
 
+const MagneticButton = ({ children, className, href, target, rel }: any) => {
+  const ref = useRef<HTMLAnchorElement>(null);
+  const x = useMotionValue(0);
+  const y = useMotionValue(0);
+  const springX = useSpring(x, { stiffness: 150, damping: 15, mass: 0.1 });
+  const springY = useSpring(y, { stiffness: 150, damping: 15, mass: 0.1 });
+
+  const handleMouse = (e: React.MouseEvent<HTMLAnchorElement>) => {
+    const { clientX, clientY } = e;
+    const { height, width, left, top } = ref.current!.getBoundingClientRect();
+    const middleX = clientX - (left + width/2);
+    const middleY = clientY - (top + height/2);
+    x.set(middleX * 0.2);
+    y.set(middleY * 0.2);
+  };
+  const reset = () => { x.set(0); y.set(0); };
+
+  return (
+    <motion.a ref={ref} onMouseMove={handleMouse} onMouseLeave={reset} style={{ x: springX, y: springY }} href={href} target={target} rel={rel} className={className}>
+      {children}
+    </motion.a>
+  );
+};
+
+const DepthParticles = () => (
+  <div className="absolute inset-0 pointer-events-none z-30 overflow-hidden">
+    {[...Array(20)].map((_, i) => (
+      <motion.div
+        key={i}
+        className="absolute rounded-full bg-white"
+        style={{
+          width: Math.random() * 20 + 5 + "px",
+          height: Math.random() * 20 + 5 + "px",
+          left: Math.random() * 100 + "%",
+          top: Math.random() * 100 + "%",
+          opacity: Math.random() * 0.05 + 0.01,
+          filter: `blur(${Math.random() * 10 + 2}px)`,
+        }}
+        animate={{
+          y: [0, (Math.random() - 0.5) * 500],
+          x: [0, (Math.random() - 0.5) * 500],
+        }}
+        transition={{ duration: Math.random() * 10 + 15, repeat: Infinity, repeatType: "mirror", ease: "easeInOut" }}
+      />
+    ))}
+  </div>
+);
+
+const LivingParagraph = ({ text, className }: { text: string, className?: string }) => (
+  <motion.p className={className}>
+    {text.split(" ").map((word, i) => (
+      <span key={i} className="inline-block mr-1 transition-colors duration-300 hover:text-white cursor-default">
+        {word}
+      </span>
+    ))}
+  </motion.p>
+);
+
 export default function Hero() {
   const sectionRef = useRef<HTMLElement>(null);
   
@@ -57,6 +115,17 @@ export default function Hero() {
 
   const rotateX = useTransform(springY, (v) => ((v - (typeof window !== 'undefined' ? window.innerHeight / 2 : 0)) / 100) * -1);
   const rotateY = useTransform(springX, (v) => ((v - (typeof window !== 'undefined' ? window.innerWidth / 2 : 0)) / 100) * 1);
+
+  // Scroll RGB Glitch hook
+  const { scrollY } = useScroll();
+  const glitchX = useTransform(scrollY, [0, 300], [0, 15]);
+  const glitchTextShadow = useMotionTemplate`${glitchX}px 0 0 rgba(0,212,255,0.4), calc(-1 * ${glitchX}px) 0 0 rgba(124,58,237,0.4)`;
+
+  // Holographic portrait subtle float mapping
+  const imageX = useTransform(springX, (v) => (v - (typeof window !== 'undefined' ? window.innerWidth / 2 : 0)) * 0.08);
+  const imageY = useTransform(springY, (v) => (v - (typeof window !== 'undefined' ? window.innerHeight / 2 : 0)) * 0.08);
+  const imageRotateX = useTransform(springY, (v) => ((v - (typeof window !== 'undefined' ? window.innerHeight / 2 : 0)) / 150) * 1);
+  const imageRotateY = useTransform(springX, (v) => ((v - (typeof window !== 'undefined' ? window.innerWidth / 2 : 0)) / 150) * -1);
 
   const handleMouseMove = useCallback((e: MouseEvent) => {
     mouseX.set(e.clientX);
@@ -79,16 +148,19 @@ export default function Hero() {
         className="absolute inset-0 flex items-center justify-center pointer-events-none select-none overflow-hidden z-0"
         style={{ x: textX, y: textY }}
       >
-        <span 
-          className="font-display font-[900] text-[22vw] leading-none whitespace-nowrap text-transparent"
+        <motion.span 
+          className="font-display font-[900] text-[22vw] leading-none whitespace-nowrap text-transparent transition-all"
           style={{ 
             WebkitTextStroke: "1px rgba(255,255,255,0.03)",
-            opacity: 0.5
+            opacity: 0.5,
+            textShadow: glitchTextShadow
           }}
         >
           GROWTH
-        </span>
+        </motion.span>
       </motion.div>
+
+      <DepthParticles />
 
       {/* Dimmed dot grid basis */}
       <div className="absolute inset-0 pointer-events-none z-0"
@@ -110,10 +182,11 @@ export default function Hero() {
 
       {/* Content — Modern editorial feel */}
       <motion.div 
-        className="section-container relative z-10"
+        className="section-container relative z-10 flex w-full"
         style={{ perspective: 1500, rotateX, rotateY }}
       >
-        <div className="flex flex-col gap-6">
+        {/* Left Side Typography */}
+        <div className="flex flex-col gap-6 relative z-20 w-full lg:w-[65%]">
           
           {/* Top Info Bar (Pill + Signature Name) */}
           <div className="flex flex-wrap items-center gap-4 mb-2">
@@ -182,14 +255,16 @@ export default function Hero() {
             transition={{ delay: 1.5, duration: 0.5 }}
           />
 
-          {/* Bio — one clean sentence */}
-          <motion.p
-            className="text-white/45 text-base md:text-lg max-w-lg leading-relaxed mb-6"
+          {/* Bio — Living Paragraph */}
+          <motion.div
             initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 1.6, duration: 0.5 }}
           >
-            {personalInfo.bio}
-          </motion.p>
+            <LivingParagraph 
+              text={personalInfo.bio} 
+              className="text-white/45 text-base md:text-lg max-w-lg leading-relaxed mb-6" 
+            />
+          </motion.div>
 
           {/* CTAs */}
           <motion.div
@@ -197,24 +272,74 @@ export default function Hero() {
             initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 1.7, duration: 0.5 }}
           >
-            <a href="#projects"
-              className="inline-flex items-center gap-2 px-6 py-3 rounded-full font-semibold text-sm text-white"
+            <MagneticButton href="#projects"
+              className="inline-flex items-center gap-2 px-6 py-3 rounded-full font-semibold text-sm text-white relative z-50"
               style={{ background: "linear-gradient(135deg, #00D4FF, #7C3AED)", boxShadow: "0 0 24px rgba(0,212,255,0.25)" }}
             >
               View Work <ArrowUpRight size={14} />
-            </a>
-            <a href="#contact"
-              className="inline-flex items-center gap-2 px-6 py-3 rounded-full font-semibold text-sm text-white/70 border border-white/12 hover:border-white/25 hover:text-white transition-all"
+            </MagneticButton>
+            <MagneticButton href="#contact"
+              className="inline-flex items-center gap-2 px-6 py-3 rounded-full font-semibold text-sm text-white/70 border border-white/12 hover:border-white/25 hover:text-white transition-all relative z-50"
             >
               Let&apos;s Talk
-            </a>
-            <a href="/ashik-k-cv.pdf" target="_blank" rel="noopener noreferrer"
-              className="inline-flex items-center gap-2 px-5 py-3 rounded-full text-sm text-white/40 hover:text-white/70 border border-white/8 hover:border-white/15 transition-all"
+            </MagneticButton>
+            <MagneticButton href="/ashik-k-cv.pdf" target="_blank" rel="noopener noreferrer"
+              className="inline-flex items-center gap-2 px-5 py-3 rounded-full text-sm text-white/40 hover:text-white/70 border border-white/8 hover:border-white/15 transition-all relative z-50"
             >
               <Download size={13} /> CV
-            </a>
+            </MagneticButton>
           </motion.div>
         </div>
+
+        {/* Right Side: Portrait Cutout (Centered & Faded) */}
+        <motion.div 
+          className="hidden lg:flex absolute right-0 top-[35%] -translate-y-1/2 w-[40vw] max-w-[550px] justify-end items-center z-10 pointer-events-none"
+          initial={{ opacity: 0, filter: "blur(10px)" }}
+          animate={{ opacity: 1, filter: "blur(0px)" }}
+          transition={{ duration: 2, delay: 0.3, ease: [0.16, 1, 0.3, 1] }}
+          style={{ 
+            x: imageX, 
+            y: imageY, 
+            rotateX: imageRotateX, 
+            rotateY: imageRotateY,
+            perspective: 1500 
+          }}
+        >
+          {/* Floating UI Holograms */}
+          <motion.div 
+            className="absolute -left-12 top-[15%] border border-cyan-500/20 p-2 text-[10px] text-cyan-500 font-mono flex flex-col gap-1 backdrop-blur-sm z-20" 
+            animate={{ y: [0, -15, 0] }} 
+            transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
+          >
+            <span className="opacity-50">SYS.ACTV</span>
+            <span className="animate-pulse">_ONLINE</span>
+          </motion.div>
+
+          <motion.div 
+            className="absolute -right-8 bottom-[25%] border border-violet-500/20 p-2 text-[10px] text-violet-500 font-mono backdrop-blur-sm z-20" 
+            animate={{ y: [0, 15, 0] }} 
+            transition={{ duration: 5, repeat: Infinity, ease: "easeInOut", delay: 1 }}
+          >
+            <span className="opacity-50">SCN.</span>
+            <span>99.9%</span>
+          </motion.div>
+
+          {/* Pristine cutout with a dual-tone glowing drop-shadow and a bottom fade mask */}
+          <motion.div className="w-full relative" style={{
+            maskImage: "linear-gradient(to bottom, black 70%, transparent 100%)",
+            WebkitMaskImage: "linear-gradient(to bottom, black 70%, transparent 100%)",
+            filter: glitchTextShadow
+          }}>
+            <img 
+              src="/portrait-cutout.png" 
+              alt="Ashik Portrait" 
+              className="w-full h-auto object-contain opacity-100"
+              style={{
+                filter: "drop-shadow(-20px 0 40px rgba(0,212,255,0.25)) drop-shadow(20px 0 40px rgba(124,58,237,0.25))"
+              }}
+            />
+          </motion.div>
+        </motion.div>
       </motion.div>
 
       {/* Scroll cue */}
