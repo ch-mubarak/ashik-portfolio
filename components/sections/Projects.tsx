@@ -1,6 +1,7 @@
 "use client";
 
 import { useRef, useState } from "react";
+import Image from "next/image";
 import { motion, useMotionValue, useSpring, useTransform, useScroll } from "framer-motion";
 import { ExternalLink, TrendingUp } from "lucide-react";
 import { projects } from "@/lib/data";
@@ -48,8 +49,8 @@ function ProjectCard({ project, index, onHoverInfo }: { project: typeof projects
         ref={cardRef}
         className="relative glass-card rounded-2xl overflow-hidden border border-white/8 h-full flex flex-col"
         style={{
-          rotateX,
-          rotateY,
+          rotateX: hovered ? rotateX : 0,
+          rotateY: hovered ? rotateY : 0,
           transformStyle: "preserve-3d",
           perspective: 1000,
         }}
@@ -82,11 +83,13 @@ function ProjectCard({ project, index, onHoverInfo }: { project: typeof projects
             style={{ background: `linear-gradient(160deg, #0d0d1a 0%, ${color}18 60%, ${glow} 100%)` }}
           >
             {project.mockImage ? (
-              /* Real Screenshot Image — CSS pan from top to bottom */
-              <img
+              /* Real Screenshot Image — Optimized with next/image */
+              <Image
                 src={project.mockImage}
                 alt={project.title}
-                className="absolute inset-0 w-full h-full object-cover object-top"
+                fill
+                sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                className="object-cover object-top"
                 style={{ animation: "imgPanY 10s ease-in-out infinite alternate" }}
               />
             ) : (
