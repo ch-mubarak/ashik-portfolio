@@ -156,7 +156,7 @@ export default function Hero() {
         <img
           src="/portrait-cutout.png"
           alt="Ashik Portrait"
-          className="absolute right-0 top-0 h-full w-auto object-contain object-right-top"
+          className="absolute right-0 top-40 lg:top-0 h-[calc(100%-10rem)] lg:h-full w-auto object-contain object-right-top scale-[1.8] lg:scale-100 origin-top-right transition-transform duration-700"
           style={{
             filter: "drop-shadow(-30px 0 60px rgba(0,212,255,0.18)) drop-shadow(0 0 80px rgba(124,58,237,0.15))"
           }}
