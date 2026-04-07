@@ -1,7 +1,7 @@
 "use client";
 
 import { useCallback, useEffect, useRef, useState } from "react";
-import { motion, useMotionValue, useSpring, useTransform, useMotionTemplate, useScroll } from "framer-motion";
+import { motion, useMotionValue, useSpring, useTransform, useMotionTemplate, useScroll, useTime } from "framer-motion";
 import { ArrowDown, ArrowUpRight, Download } from "lucide-react";
 import { personalInfo } from "@/lib/data";
 
@@ -116,9 +116,17 @@ export default function Hero() {
   const rotateX = useTransform(springY, (v) => ((v - (typeof window !== 'undefined' ? window.innerHeight / 2 : 0)) / 100) * -1);
   const rotateY = useTransform(springX, (v) => ((v - (typeof window !== 'undefined' ? window.innerWidth / 2 : 0)) / 100) * 1);
 
-  // Scroll RGB Glitch hook
+  // Scroll + Persistent Auto-Glitch
   const { scrollY } = useScroll();
-  const glitchX = useTransform(scrollY, [0, 300], [0, 15]);
+  const time = useTime();
+  // Persistent subtle jitter (±2px)
+  const autoGlitch = useTransform(time, (t) => Math.sin(t / 150) * 2);
+  // Scroll-based expansion
+  const scrollGlitch = useTransform(scrollY, [0, 300], [0, 15]);
+  
+  // Combine both into a single motion value
+  const glitchX = useTransform([autoGlitch, scrollGlitch], ([a, s]) => Number(a) + Number(s));
+  
   const glitchTextShadow = useMotionTemplate`${glitchX}px 0 0 rgba(0,212,255,0.4), calc(-1 * ${glitchX}px) 0 0 rgba(124,58,237,0.4)`;
 
   // Holographic portrait subtle float mapping
@@ -156,7 +164,7 @@ export default function Hero() {
         <img
           src="/portrait-cutout.png"
           alt="Ashik Portrait"
-          className="absolute right-0 top-40 lg:top-0 h-[calc(100%-10rem)] lg:h-full w-auto object-contain object-right-top scale-[1.8] lg:scale-100 origin-top-right transition-transform duration-700"
+          className="absolute right-[-25%] lg:right-0 top-40 lg:top-0 h-[calc(100%-10rem)] lg:h-full w-auto object-contain object-right-top scale-[1.8] lg:scale-100 origin-top-right transition-transform duration-700"
           style={{
             filter: "drop-shadow(-30px 0 60px rgba(0,212,255,0.18)) drop-shadow(0 0 80px rgba(124,58,237,0.15))"
           }}
