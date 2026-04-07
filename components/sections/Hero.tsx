@@ -143,9 +143,45 @@ export default function Hero() {
   return (
     <section ref={sectionRef} className="relative min-h-screen flex flex-col justify-center overflow-hidden pt-24 pb-12 bg-[#05050A]">
 
-      {/* Massive Background Text */}
+      <DepthParticles />
+
+      {/* Full-bleed cinematic background portrait — all screen sizes */}
       <motion.div
-        className="absolute inset-0 flex items-center justify-center pointer-events-none select-none overflow-hidden z-0"
+        className="absolute inset-0 z-0 pointer-events-none"
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ duration: 2.5, delay: 0.3 }}
+      >
+        {/* Portrait cutout — transparent PNG, right-anchored, full height */}
+        <img
+          src="/portrait-cutout.png"
+          alt="Ashik Portrait"
+          className="absolute right-0 top-0 h-full w-auto object-contain object-right-top"
+          style={{
+            filter: "drop-shadow(-30px 0 60px rgba(0,212,255,0.18)) drop-shadow(0 0 80px rgba(124,58,237,0.15))"
+          }}
+        />
+
+        {/* Bottom fade to dark */}
+        <div
+          className="absolute inset-0"
+          style={{
+            background: "linear-gradient(to bottom, transparent 0%, rgba(5,5,10,0.5) 55%, rgba(5,5,10,0.9) 78%, rgba(5,5,10,1) 100%)"
+          }}
+        />
+
+        {/* Left fade — keeps text area readable */}
+        <div
+          className="absolute inset-0"
+          style={{
+            background: "linear-gradient(to right, rgba(5,5,10,1) 0%, rgba(5,5,10,0.88) 30%, rgba(5,5,10,0.4) 55%, transparent 80%)"
+          }}
+        />
+      </motion.div>
+
+      {/* Massive Background Text — Moved here to sit on top of background gradients but behind content */}
+      <motion.div
+        className="absolute inset-0 flex items-center justify-center pointer-events-none select-none overflow-hidden z-[1]"
         style={{ x: textX, y: textY }}
       >
         <motion.span
@@ -159,8 +195,6 @@ export default function Hero() {
           GROWTH
         </motion.span>
       </motion.div>
-
-      <DepthParticles />
 
       {/* Dimmed dot grid basis */}
       <div className="absolute inset-0 pointer-events-none z-0"
@@ -291,39 +325,7 @@ export default function Hero() {
           </motion.div>
         </div>
 
-        {/* Full-bleed cinematic background portrait — all screen sizes */}
-        <motion.div
-          className="absolute inset-0 z-0 pointer-events-none"
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ duration: 2.5, delay: 0.3 }}
-        >
-          {/* Portrait cutout — transparent PNG, right-anchored, full height */}
-          <img
-            src="/portrait-cutout.png"
-            alt="Ashik Portrait"
-            className="absolute right-0 top-0 h-full w-auto object-contain object-right-top"
-            style={{
-              filter: "drop-shadow(-30px 0 60px rgba(0,212,255,0.18)) drop-shadow(0 0 80px rgba(124,58,237,0.15))"
-            }}
-          />
 
-          {/* Bottom fade to dark */}
-          <div
-            className="absolute inset-0"
-            style={{
-              background: "linear-gradient(to bottom, transparent 0%, rgba(5,5,10,0.5) 55%, rgba(5,5,10,0.9) 78%, rgba(5,5,10,1) 100%)"
-            }}
-          />
-
-          {/* Left fade — keeps text area readable */}
-          <div
-            className="absolute inset-0"
-            style={{
-              background: "linear-gradient(to right, rgba(5,5,10,1) 0%, rgba(5,5,10,0.88) 30%, rgba(5,5,10,0.4) 55%, transparent 80%)"
-            }}
-          />
-        </motion.div>
 
         {/* Floating hologram chips — desktop only */}
         <motion.div
