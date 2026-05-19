@@ -1,46 +1,46 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { Search, TrendingUp, PenTool, BarChart3 } from "lucide-react";
+import { Search, Megaphone, PenTool, Monitor } from "lucide-react";
 import ScrollReveal from "@/components/animations/ScrollReveal";
 import TiltCard from "@/components/ui/TiltCard";
 
 const services = [
   {
-    icon: Search,
-    title: "SEO Strategy",
+    icon: Megaphone,
+    title: "Social Media Marketing",
     description:
-      "From zero-traffic audits to sustained Page 1 rankings. Keyword architecture, technical fixes, content planning — the full stack.",
-    color: "#00D4FF",
-    glow: "rgba(0,212,255,0.12)",
-    tags: ["Keyword Research", "Technical SEO", "Audits"],
-  },
-  {
-    icon: TrendingUp,
-    title: "Performance Ads",
-    description:
-      "Meta and Google campaigns built to convert, not just impress. Every rupee tracked, every audience tested, every result owned.",
+      "Build a strong digital presence through strategic campaigns, engaging creatives, and audience-focused content that drives reach, engagement, and conversions. From organic growth to paid campaigns, every strategy is built for measurable results.",
     color: "#7C3AED",
     glow: "rgba(124,58,237,0.12)",
-    tags: ["Meta Ads", "Google Ads", "ROAS Optimization"],
+    tags: ["Performance Marketing", "Meta Ads", "SEM", "Campaign Strategy", "Audience Targeting", "Social Media Management"],
   },
   {
     icon: PenTool,
-    title: "Content & Brand",
+    title: "Content Creation",
     description:
-      "Content that ranks and copy that converts. Strategy-first — no filler posts, no vanity metrics, just content that moves people.",
+      "Create impactful content that connects with your audience and strengthens your brand identity. From visuals to copywriting, every piece of content is designed to attract, engage, and convert.",
     color: "#FF2D6B",
     glow: "rgba(255,45,107,0.12)",
-    tags: ["Content Strategy", "Social Media", "Copywriting"],
+    tags: ["Content Strategy", "Copywriting", "Reel Creation", "Branding", "Creative Design", "Storytelling"],
   },
   {
-    icon: BarChart3,
-    title: "Analytics & Growth",
+    icon: Monitor,
+    title: "Web Development",
     description:
-      "GA4 setup, dashboard building, and weekly reporting that actually tells you what to do next — not just what happened.",
+      "Design and develop modern, responsive websites that combine aesthetics with functionality. Focused on speed, user experience, and conversion-driven layouts for businesses and brands.",
     color: "#10B981",
     glow: "rgba(16,185,129,0.12)",
-    tags: ["GA4", "Reporting", "KPI Dashboards"],
+    tags: ["Responsive Design", "WordPress", "UI/UX", "Landing Pages", "Website Optimization", "Frontend Development"],
+  },
+  {
+    icon: Search,
+    title: "Search Engine Optimisation",
+    description:
+      "Improve your website’s visibility with data-driven SEO strategies that help your business rank higher and attract quality organic traffic through technical and content optimization.",
+    color: "#00D4FF",
+    glow: "rgba(0,212,255,0.12)",
+    tags: ["Technical SEO", "Keyword Research", "On-Page SEO", "Off-Page SEO", "SEO Audits", "Google Search Console"],
   },
 ];
 

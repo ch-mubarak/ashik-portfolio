@@ -82,7 +82,7 @@ export default function Skills() {
                 </div>
 
                 <p className="text-white/50 text-sm mb-5 leading-relaxed max-w-md">
-                  End-to-end search optimisation — from technical audits and keyword architecture to content strategy and link building. The core of sustainable digital growth.
+                  Building strong digital presences through strategic campaigns, engaging creatives, and audience-focused content that drives measurable growth and conversions.
                 </p>
 
                 <div className="flex flex-wrap gap-2">
@@ -112,8 +112,8 @@ export default function Skills() {
           </ScrollReveal>
         </div>
 
-        {/* Bottom row — 3 cards */}
-        <div className="grid md:grid-cols-3 gap-5">
+        {/* Bottom row — 2 cards */}
+        <div className="grid md:grid-cols-2 gap-5">
           {rest.slice(1).map((skill, i) => (
             <ScrollReveal key={skill.category} delay={0.08 * (i + 1)} direction="up">
               <SkillCard skill={skill} />
